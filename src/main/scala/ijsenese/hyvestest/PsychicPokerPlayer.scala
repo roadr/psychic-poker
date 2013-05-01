@@ -14,7 +14,7 @@ object PsychicPokerPlayer {
             HandRank(cardsPickedFromStartingHand ::: cardsFromDeck)
         }
 
-        ranks.toList max RankOrdering
+        ranks max RankOrdering
     }
 }
 
