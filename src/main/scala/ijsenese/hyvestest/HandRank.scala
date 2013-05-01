@@ -44,8 +44,8 @@ object HandRank {
             case _ if isStraightFlush(cards) => StraightFlush
             case _ if isFourOfAKind(cards) => FourOfAKind
             case _ if isFullHouse(cards) => FullHouse
-            case _ if isFlush(cards) => Flush
-            case _ if isStraight(cards) => Straight
+            case _ if containsFlush(cards) => Flush
+            case _ if containsStraight(cards) => Straight
             case _ if containsThreeOfAKind(cards) => ThreeOfAKind
             case _ if containsTwoPairs(cards) => TwoPairs
             case _ if containsPair(cards) => OnePair
@@ -54,7 +54,7 @@ object HandRank {
     }
 
     private def isStraightFlush(cards: List[Card]) = {
-        isFlush(cards) && isStraight(cards)
+        containsFlush(cards) && containsStraight(cards)
     }
 
     private def isFourOfAKind(cards: List[Card]) = {
@@ -67,12 +67,12 @@ object HandRank {
         (frequencies.keys.size == 2) && (frequencies exists(_._2 ==2))
     }
 
-    private def isFlush(cards: List[Card]) = {
+    private def containsFlush(cards: List[Card]) = {
         val frequencies = frequency[SeedValue](cards map (_.seedValue))
         frequencies.keys.size == 1
     }
 
-    private def isStraight(cards: List[Card]) = {
+    private def containsStraight(cards: List[Card]) = {
         possibleStraights exists (_ -- (cards.map(card => card.faceValue).toSet) isEmpty)
     }
 
