@@ -34,9 +34,9 @@ object Face extends Enumeration {
 import Face._
 import Seed._
 
-case class Card(seed: SeedValue, value: FaceValue) {
+case class Card(seedValue: SeedValue, faceValue: FaceValue) {
     override def toString = {
-        value.toString + seed.toString
+        faceValue.toString + seedValue.toString
     }
 }
 

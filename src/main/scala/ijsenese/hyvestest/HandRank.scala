@@ -58,31 +58,31 @@ object HandRank {
     }
 
     private def isFourOfAKind(cards: List[Card]) = {
-        val frequencies = frequencyByValue(cards)
+        val frequencies = frequency[FaceValue](cards map (_.faceValue))
         frequencies exists (_._2 == 4)
     }
 
     private def isFullHouse(cards: List[Card]) = {
-        val frequencies = frequencyByValue(cards)
+        val frequencies = frequency[FaceValue](cards map (_.faceValue))
         (frequencies.keys.size == 2) && (frequencies exists(_._2 ==2))
     }
 
     private def isFlush(cards: List[Card]) = {
-        val frequencies = frequencyBySeed(cards)
+        val frequencies = frequency[SeedValue](cards map (_.seedValue))
         frequencies.keys.size == 1
     }
 
     private def isStraight(cards: List[Card]) = {
-        possibleStraights exists (_ -- (cards.map(card => card.value).toSet) isEmpty)
+        possibleStraights exists (_ -- (cards.map(card => card.faceValue).toSet) isEmpty)
     }
 
     private def containsThreeOfAKind(cards: List[Card]) = {
-        val frequencies = frequencyByValue(cards)
+        val frequencies = frequency[FaceValue](cards map (_.faceValue))
         frequencies.exists(_._2 > 2)
     }
 
     private def containsTwoPairs(cards: List[Card]) = {
-        val frequencies = frequencyByValue(cards)
+        val frequencies = frequency[FaceValue](cards map (_.faceValue))
         val (pairs, _) = frequencies partition {
             case (value, freq) if freq > 1 => true
             case _ => false
@@ -91,27 +91,36 @@ object HandRank {
     }
 
     private def containsPair(cards: List[Card]) = {
-        val frequencies = frequencyByValue(cards)
+        val frequencies = frequency[FaceValue](cards map (_.faceValue))
         frequencies.exists(_._2 > 1)
     }
 
-    private def frequencyByValue(cards: List[Card]) = {
-        var frequencies = Map[FaceValue, Int]()
-        cards.foreach(card => frequencies.get(card.value) match {
-            case Some(x) => frequencies += (card.value -> (x+1))
-            case None => frequencies += (card.value -> 1)
+    private def frequency[T](values: List[T]) = {
+        var frequencies = Map[T, Int]()
+        values.foreach(value => frequencies.get(value) match {
+            case Some(x) => frequencies += (value -> (x+1))
+            case None => frequencies += (value -> 1)
         })
         frequencies
     }
 
-    private def frequencyBySeed(cards: List[Card]) = {
-        var frequencies = Map[SeedValue, Int]()
-        cards.foreach(card => frequencies.get(card.seed) match {
-            case Some(x) => frequencies += (card.seed -> (x+1))
-            case None => frequencies += (card.seed -> 1)
-        })
-        frequencies
-    }
+//    private def frequencyByValue(cards: List[Card]) = {
+//        var frequencies = Map[FaceValue, Int]()
+//        cards.foreach(card => frequencies.get(card.value) match {
+//            case Some(x) => frequencies += (card.value -> (x+1))
+//            case None => frequencies += (card.value -> 1)
+//        })
+//        frequencies
+//    }
+
+//    private def frequencyBySeed(cards: List[Card]) = {
+//        var frequencies = Map[SeedValue, Int]()
+//        cards.foreach(card => frequencies.get(card.seed) match {
+//            case Some(x) => frequencies += (card.seed -> (x+1))
+//            case None => frequencies += (card.seed -> 1)
+//        })
+//        frequencies
+//    }
 
     private def possibleStraights: List[Set[FaceValue]] = {
         List(
