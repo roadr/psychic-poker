@@ -104,24 +104,6 @@ object HandRank {
         frequencies
     }
 
-//    private def frequencyByValue(cards: List[Card]) = {
-//        var frequencies = Map[FaceValue, Int]()
-//        cards.foreach(card => frequencies.get(card.value) match {
-//            case Some(x) => frequencies += (card.value -> (x+1))
-//            case None => frequencies += (card.value -> 1)
-//        })
-//        frequencies
-//    }
-
-//    private def frequencyBySeed(cards: List[Card]) = {
-//        var frequencies = Map[SeedValue, Int]()
-//        cards.foreach(card => frequencies.get(card.seed) match {
-//            case Some(x) => frequencies += (card.seed -> (x+1))
-//            case None => frequencies += (card.seed -> 1)
-//        })
-//        frequencies
-//    }
-
     private def possibleStraights: List[Set[FaceValue]] = {
         List(
             Set(Ace, Two, Three, Four, Five),
